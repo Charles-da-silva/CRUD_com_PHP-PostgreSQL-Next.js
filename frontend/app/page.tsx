@@ -61,7 +61,9 @@ export default function Home() {
       body: JSON.stringify({ nome, email }),
     });
 
-    await handleResponse(res);    
+    await handleResponse(res); 
+    
+    fetchClientes()
   };
 
   const deletarCliente = async () => {
@@ -71,7 +73,9 @@ export default function Home() {
       body: JSON.stringify({ id }),
     });
 
-    await handleResponse(res);    
+    await handleResponse(res);   
+    
+    fetchClientes()
   };
 
   const atualizarCliente = async () => {
@@ -82,11 +86,13 @@ export default function Home() {
     });
 
     await handleResponse(res);    
+
+    fetchClientes()
   };
 
   useEffect(() => {
     fetchClientes();
-  }, [criarCliente, deletarCliente, atualizarCliente]);
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -119,7 +125,9 @@ export default function Home() {
             placeholder="Email"
             onChange={(e) => setEmail(e.target.value)}
           />
-          <button className={styles.button} onClick={criarCliente}>
+          <button 
+            className={styles.button} 
+            onClick={criarCliente}>
             Criar
           </button>
         </div>
@@ -173,7 +181,10 @@ export default function Home() {
               }
             }}
           />
-          <button className={styles.button} style={{ backgroundColor: "#ff4d4f" }} onClick={deletarCliente}>
+          <button 
+            className={styles.button} 
+            style={{ backgroundColor: "#ff4d4f" }} 
+            onClick={deletarCliente}>
             Deletar
           </button>
         </div>
