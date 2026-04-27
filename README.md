@@ -1,6 +1,6 @@
 # CRUD de Clientes — PHP + PostgreSQL + Next.js
 
-Projeto simples de CRUD (Create, Read, Update, Delete) desenvolvido para consolidar fundamentos de backend com PHP e integração com frontend moderno.
+Projeto de CRUD (Create, Read, Update, Delete) usando layers de Controller, Service, Repository. Desenvolvido para consolidar fundamentos de backend com PHP e integração com frontend moderno.
 
 ## 🧱 Stack utilizada
 
