@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
-import { text } from "stream/consumers";
+import styles from "./style.module.css";
+
 
 type Cliente = {
   id: number;
@@ -36,11 +37,17 @@ export default function Home() {
   };
 
   const handleResponse = async (res: Response) => {
+    if (res.ok) {
+      // limpa inputs se a resposta for bem-sucedida 
+      setId("");
+      setNome("");
+      setEmail("");
+    }
+
     try {
       const data: ApiResponse = await res.json();
       setMensagem(data.message);
       setErro(!data.success);
-      
     } catch {
       setMensagem("Erro inesperado na resposta do servidor");
       setErro(true);
@@ -54,13 +61,7 @@ export default function Home() {
       body: JSON.stringify({ nome, email }),
     });
 
-    await handleResponse(res);
-
-    // limpa inputs
-    setNome("");
-    setEmail("");
-
-    fetchClientes();
+    await handleResponse(res);    
   };
 
   const deletarCliente = async () => {
@@ -70,12 +71,7 @@ export default function Home() {
       body: JSON.stringify({ id }),
     });
 
-    await handleResponse(res);
-
-    // limpa input
-    setId("");
-
-    fetchClientes();
+    await handleResponse(res);    
   };
 
   const atualizarCliente = async () => {
@@ -85,28 +81,21 @@ export default function Home() {
       body: JSON.stringify({ id, nome, email }),
     });
 
-    await handleResponse(res);
-
-    // limpa inputs
-    setId("");
-    setNome("");
-    setEmail("");
-
-    fetchClientes();
+    await handleResponse(res);    
   };
 
   useEffect(() => {
     fetchClientes();
-  }, []);
+  }, [criarCliente, deletarCliente, atualizarCliente]);
 
   return (
-    <div style={styles.container}>
-      <h1 style={styles.title}>CRUD de Clientes</h1>
+    <div className={styles.container}>
+      <h1 className={styles.title}>CRUD de Clientes</h1>
 
       {mensagem && (
         <div
+          className={styles.alert}
           style={{
-            ...styles.alert,
             backgroundColor: erro ? "#ff4d4f" : "#52c41a",
           }}
         >
@@ -114,32 +103,32 @@ export default function Home() {
         </div>
       )}
 
-      <div style={styles.grid}>
+      <div className={styles.grid}>
         {/* Criar */}
-        <div style={styles.card}>
+        <div className={styles.card}>
           <h2>Criar Cliente</h2>
           <input
-            style={styles.input}
+            className={styles.input}
             value={nome}
             placeholder="Nome"
             onChange={(e) => setNome(e.target.value)}
           />
           <input
-            style={styles.input}
+            className={styles.input}
             value={email}
             placeholder="Email"
             onChange={(e) => setEmail(e.target.value)}
           />
-          <button style={styles.button} onClick={criarCliente}>
+          <button className={styles.button} onClick={criarCliente}>
             Criar
           </button>
         </div>
 
         {/* Atualizar */}
-        <div style={styles.card}>
+        <div className={styles.card}>
           <h2>Atualizar Cliente</h2>
           <input
-            style={styles.input}
+            className={styles.input}
             value={id}
             placeholder="ID"
             onChange={(e) => {
@@ -152,27 +141,27 @@ export default function Home() {
             }}
           />
           <input
-            style={styles.input}
+            className={styles.input}
             value={nome}
             placeholder="Nome"
             onChange={(e) => setNome(e.target.value)}
           />
           <input
-            style={styles.input}
+            className={styles.input}
             value={email}
             placeholder="Email"
             onChange={(e) => setEmail(e.target.value)}
           />
-          <button style={styles.button} onClick={atualizarCliente}>
+          <button className={styles.button} onClick={atualizarCliente}>
             Atualizar
           </button>
         </div>
 
         {/* Deletar */}
-        <div style={styles.card}>
+        <div className={styles.card}>
           <h2>Deletar Cliente</h2>
           <input
-            style={styles.input}
+            className={styles.input}
             value={id}
             placeholder="ID"
             onChange={(e) => {
@@ -184,16 +173,16 @@ export default function Home() {
               }
             }}
           />
-          <button style={{ ...styles.button, backgroundColor: "#ff4d4f" }} onClick={deletarCliente}>
+          <button className={styles.button} style={{ backgroundColor: "#ff4d4f" }} onClick={deletarCliente}>
             Deletar
           </button>
         </div>
       </div>
 
       {/* Lista */}
-      <div style={styles.listContainer}>
-        <p style={{ ...styles.title, ...styles.p1 }}>Lista de Clientes</p>
-        <table style={styles.table}>
+      <div className={styles.listContainer}>
+        <p className={ `${styles.title} ${styles.p1}` }>Lista de Clientes</p>
+        <table className={styles.table}>
           <thead>
             <tr>
               <th>ID</th>
@@ -204,7 +193,7 @@ export default function Home() {
           <tbody>
             {clientes.map((c) => (
               <tr key={c.id}>
-                <td style={{textAlign: "center"}}>{c.id}</td>
+                <td className={styles.centered}>{c.id}</td>
                 <td>{c.nome}</td>
                 <td>{c.email}</td>
               </tr>
@@ -214,71 +203,4 @@ export default function Home() {
       </div>
     </div>
   );
-}
-
-/* ====== ESTILOS ====== */
-
-const styles: any = {
-  container: {
-    maxWidth: 900,
-    margin: "40px auto",
-    fontFamily: "Arial, sans-serif",
-  },
-  title: {
-    fontSize: 38,
-    color: "blue",
-    textAlign: "center",
-    fontWeight: "bold",
-    marginBottom: 20,
-
-  },
-  grid: {
-    display: "grid",
-    gridTemplateColumns: "1fr 1fr 1fr",
-    gap: 20,
-    marginBottom: 30,
-  },
-  card: {
-    padding: 20,
-    borderRadius: 8,
-    boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-    backgroundColor: "#c4c1c1",
-    display: "flex",
-    flexDirection: "column",
-    gap: 10,
-  },
-  input: {
-    padding: 8,
-    borderRadius: 4,
-    border: "2px solid #ccc",
-    backgroundColor: "#d8d7d7",
-    textColor: "#000",
-    color: "#000",
-  },
-  button: {
-    padding: 10,
-    border: "none",
-    borderRadius: 4,
-    backgroundColor: "#1677ff",
-    color: "#fff",
-    cursor: "pointer",
-  },
-  alert: {
-    padding: 10,
-    color: "#fff",
-    borderRadius: 4,
-    marginBottom: 20,
-    textAlign: "center",
-  },
-  listContainer: {
-    marginTop: 20,
-  },
-  table: {
-    width: "100%",
-    borderCollapse: "collapse",
-  },
-
-  p1: {
-    fontSize: 18,
-  },
 };

@@ -1,5 +1,8 @@
 <?php
-require_once 'db.php';
+// require_once é usado para garantir que o arquivo seja incluído apenas uma vez, 
+// evitando erros de redefinição de classes ou funções, o que poderia gerar um erro fatal (HTTP Code 500). 
+// Se o arquivo já tiver sido incluído, ele não será incluído novamente.;
+require_once 'db.php';  
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
