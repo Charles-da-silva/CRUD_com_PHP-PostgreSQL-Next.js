@@ -11,31 +11,6 @@ Projeto de CRUD (Create, Read, Update, Delete) usando layers de Controller, Serv
 
 ---
 
-## ⚙️ Funcionalidades
-
-* Criar cliente
-* Listar clientes
-* Atualizar cliente
-* Deletar cliente
-* Feedback visual de sucesso/erro nas operações
-
----
-
-## 📁 Estrutura do projeto
-
-```
-/backend
-  ├── index.php
-  ├── db.php
-
-/frontend
-  ├── app/
-  │   └── page.tsx
-  ├── package.json
-```
-
----
-
 ## 🚀 Como executar o projeto
 
 ### 1. Subir o banco de dados (Docker)
@@ -98,36 +73,6 @@ http://localhost:3000
 
 ---
 
-## 🔌 Endpoints da API
-
-| Método | Endpoint     | Descrição        |
-| ------ | ------------ | ---------------- |
-| GET    | `/index.php` | Lista clientes   |
-| POST   | `/index.php` | Cria cliente     |
-| PUT    | `/index.php` | Atualiza cliente |
-| DELETE | `/index.php` | Remove cliente   |
-
-### 📥 Exemplo de payload (POST)
-
-```json
-{
-  "nome": "João",
-  "email": "joao@email.com"
-}
-```
-
-### 📥 Exemplo (PUT)
-
-```json
-{
-  "id": 1,
-  "nome": "João Alberto",
-  "email": "joao@email.com"
-}
-```
-
----
-
 ## 🔁 Fluxo da aplicação
 
 1. Frontend envia requisição via `fetch`
@@ -159,7 +104,6 @@ Os endpoints foram testados utilizando Thunder Client (VS Code).
 
 * Validação mais robusta de inputs (backend e frontend)
 * Paginação na listagem
-* Separação em camadas no backend (Controller / Service / Repository)
 * Uso de variáveis de ambiente (.env)
 * Dockerização completa (frontend + backend)
 * Autenticação básica
