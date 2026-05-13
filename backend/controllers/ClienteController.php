@@ -1,43 +1,119 @@
 <?php
+
 require_once __DIR__ . '/../services/ClienteService.php';
+require_once __DIR__ . '/../utils/Response.php';
 
 // Arquivo de configuração de controllers, acionado pelo arquivo index.php
 // Este por sua vez aciona o arquivo de Service
 
 class ClienteController {
+
     private $service;
 
     public function __construct() {
+
         $this->service = new ClienteService();
     }
 
-    public function handleRequest() {
-        $method = $_SERVER['REQUEST_METHOD'];
-        $input = json_decode(file_get_contents("php://input"), true);
+    /*
+    |--------------------------------------------------------------------------
+    | GET ALL
+    |--------------------------------------------------------------------------
+    */
 
-        switch ($method) {
-            case 'GET':
-                $data = $this->service->listar();
-                echo json_encode($data);
-                break;
+    public function findAll() {
 
-            case 'POST':
-                echo json_encode(
-                    $this->service->criar($input['nome'], $input['email'])
-                );
-                break;
+        $clientes = $this->service->listar();
 
-            case 'PUT':
-                echo json_encode(
-                    $this->service->atualizar($input['id'], $input['nome'], $input['email'])
-                );
-                break;
+        Response::success(
+            $clientes,
+            null,
+            200
+        );
+    }
 
-            case 'DELETE':
-                echo json_encode(
-                    $this->service->deletar($input['id'])
-                );
-                break;
-        }
+    /*
+    |--------------------------------------------------------------------------
+    | GET BY ID
+    |--------------------------------------------------------------------------
+    */
+
+    public function findById($id) {
+
+        $cliente = $this->service->buscarPorId($id);
+
+        Response::success(
+            $cliente,
+            null,
+            200
+        );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | CREATE
+    |--------------------------------------------------------------------------
+    */
+
+    public function create() {
+
+        /*
+        |--------------------------------------------------------------------------
+        | php://input
+        |--------------------------------------------------------------------------
+        | Lê body RAW da requisição.
+        */
+
+        $input = json_decode(
+            file_get_contents("php://input"),
+            true
+        );
+
+        $this->service->criar($input);
+
+        Response::success(
+            null,
+            "Cliente criado com sucesso",
+            201
+        );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | UPDATE
+    |--------------------------------------------------------------------------
+    */
+
+    public function update($id) {
+
+        $input = json_decode(
+            file_get_contents("php://input"),
+            true
+        );
+
+        $this->service->atualizar($id, $input);
+
+        Response::success(
+            null,
+            "Cliente atualizado",
+            200
+        );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | DELETE
+    |--------------------------------------------------------------------------
+    */
+
+    public function delete($id) {
+
+        $this->service->deletar($id);
+
+        Response::success(
+            null,
+            "Cliente deletado",
+            200
+        );
     }
 }
