@@ -58,12 +58,9 @@ class ClienteController {
     public function create() {
 
         /*
-        |--------------------------------------------------------------------------
-        | php://input
-        |--------------------------------------------------------------------------
-        | Lê body RAW da requisição.
+        Abrindo o corpo da requisição (php://input) e extraindo o JSON 
+        (json_decode) enviado pelo front para descobrir os dados do novo cliente.
         */
-
         $input = json_decode(
             file_get_contents("php://input"),
             true
